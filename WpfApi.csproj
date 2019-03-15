@@ -66,6 +66,7 @@
     <Compile Include="Collections\NumberableModel.cs" />
     <Compile Include="Collections\NumberableObservableCollection.cs" />
     <Compile Include="Converters\NegativeBooleanConverter.cs" />
+    <Compile Include="TaskExtension.cs" />
     <Compile Include="TriggerTracing.cs" />
     <Compile Include="StyleUtilities.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
