@@ -23,8 +23,6 @@ using System.Windows.Media.Animation;
 
 namespace Milky.WpfApi
 {
-#if DEBUG
-
     /// <summary>
     /// Contains attached properties to activate Trigger Tracing on the specified Triggers.
     /// This file alone should be dropped into your app.
@@ -173,6 +171,7 @@ namespace Milky.WpfApi
             {
                 base.TraceEvent(eventCache, source, eventType, id, format, args);
 
+#if DEBUG
                 if (format.StartsWith("Storyboard has begun;"))
                 {
                     TriggerTraceStoryboard storyboard = args[1] as TriggerTraceStoryboard;
@@ -197,6 +196,8 @@ namespace Milky.WpfApi
                             storyboard.StoryboardType));
                     }
                 }
+#endif
+
             }
 
             public override void Write(string message)
@@ -208,5 +209,4 @@ namespace Milky.WpfApi
             }
         }
     }
-#endif
 }
