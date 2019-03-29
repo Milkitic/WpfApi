@@ -11,5 +11,10 @@ namespace Milky.WpfApi
         {
             Application.Current.Dispatcher.Invoke(() => { action?.Invoke(); });
         }
+		
+        public static void ToUiThread(this Action action)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => { action?.Invoke(); }), DispatcherPriority.Normal);
+        }
     }
 }
