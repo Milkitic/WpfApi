@@ -53,6 +53,10 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -65,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Collections\NumberableModel.cs" />
     <Compile Include="Collections\NumberableObservableCollection.cs" />
+    <Compile Include="Commands\EventToCommand.cs" />
+    <Compile Include="Commands\IEventArgsConverter.cs" />
     <Compile Include="Converters\NegativeBooleanConverter.cs" />
     <Compile Include="TaskExtension.cs" />
     <Compile Include="TriggerTracing.cs" />
