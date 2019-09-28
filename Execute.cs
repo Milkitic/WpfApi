@@ -9,12 +9,14 @@ namespace Milky.WpfApi
     {
         public static void OnUiThread(this Action action)
         {
-            Application.Current.Dispatcher.Invoke(() => { action?.Invoke(); });
+            Application.Current?.Dispatcher?.Invoke(() => { action?.Invoke(); });
         }
 		
         public static void ToUiThread(this Action action)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => { action?.Invoke(); }), DispatcherPriority.Normal);
+            Application.Current?.Dispatcher?.BeginInvoke(new Action(() => { action?.Invoke(); }), DispatcherPriority.Normal);
         }
+
+        public static bool CheckDispatcherAccess() => Thread.CurrentThread.ManagedThreadId == 1;
     }
 }

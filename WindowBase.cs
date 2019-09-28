@@ -31,9 +31,16 @@ namespace Milky.WpfApi
             return CurrentWindows.Single(k => k.GetType() == typeof(T));
         }
 
-        public static Window GetCurrentFirst<T>() where T : WindowBase
+        public static T GetCurrentFirst<T>() where T : WindowBase
         {
-            return CurrentWindows.FirstOrDefault(k => k.GetType() == typeof(T));
+            return (T)CurrentWindows.FirstOrDefault(k => k.GetType() == typeof(T));
         }
+
+        protected override void OnContentRendered(EventArgs e)
+        {
+            Shown?.Invoke(this, e);
+        }
+
+        public event EventHandler<EventArgs> Shown;
     }
 }
