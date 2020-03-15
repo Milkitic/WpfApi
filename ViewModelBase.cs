@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using Milky.WpfApi.Annotations;
 
 namespace Milky.WpfApi
 {
@@ -9,14 +10,10 @@ namespace Milky.WpfApi
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual void OnPropertyChanged<T>(Expression<Func<object, T>> propertyExpr)
-        {
-            OnPropertyChanged(((MemberExpression)propertyExpr.Body).Member.Name);
         }
     }
 }
