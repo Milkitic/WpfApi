@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Milki.Utils.WPF.Interaction;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Controls
 {
     /// <summary>
     /// 扩展窗体基础类

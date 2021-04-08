@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Controls
 {
     public abstract class ToolWindowEx : WindowEx
     {

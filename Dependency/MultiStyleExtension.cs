@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Markup;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Dependency
 {
     [MarkupExtensionReturnType(typeof(Style))]
     public class MultiStyleExtension : MarkupExtension

@@ -1,4 +1,4 @@
-﻿namespace Milki.Utils.WPF
+﻿namespace Milki.Utils.WPF.Controls
 {
     public interface IWindowBase
     {

@@ -1,99 +1,66 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace Milki.Utils.WPF.Interaction
 {
     public static class Execute
     {
-        private static SynchronizationContext _uiContext;
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-        public static void SetMainThreadContext()
+        public static async Task OnUiThreadAsync(Func<Task> asyncAction)
         {
-            if (_uiContext != null) Logger.Warn("Current SynchronizationContext may be replaced.");
-
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies)
+            if (Application.Current?.Dispatcher != null)
             {
-                var fileName = Path.GetFileName(assembly.Location);
-                if (fileName == "System.Windows.Forms.dll")
+                await Application.Current.Dispatcher.InvokeAsync(asyncAction);
+            }
+            else
+            {
+                try
                 {
-                    var type = assembly.DefinedTypes.First(k => k.Name.StartsWith("WindowsFormsSynchronizationContext"));
-                    _uiContext = (SynchronizationContext)Activator.CreateInstance(type);
-                    break;
+                    if (asyncAction != null) await asyncAction.Invoke();
                 }
-                else if (fileName == "WindowsBase.dll")
+                catch (Exception ex)
                 {
-                    var type = assembly.DefinedTypes.First(k => k.Name.StartsWith("DispatcherSynchronizationContext"));
-                    _uiContext = (SynchronizationContext)Activator.CreateInstance(type);
-                    break;
+                    Console.WriteLine("UiContext execute error: " + ex.Message);
                 }
             }
+        }
 
-            if (_uiContext == null) _uiContext = SynchronizationContext.Current;
+        public static async Task OnUiThreadAsync(Action action)
+        {
+            if (Application.Current?.Dispatcher != null)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(action);
+            }
+            else
+            {
+                try
+                {
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("UiContext execute error: " + ex.Message);
+                }
+            }
         }
 
         public static void OnUiThread(this Action action)
         {
-            if (_uiContext == null)
+            if (Application.Current?.Dispatcher != null)
             {
-                if (Application.Current?.Dispatcher != null)
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        try
-                        {
-                            action?.Invoke();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, "UiContext execute error.");
-                        }
-                    });
-                else
+                Application.Current.Dispatcher.Invoke(action);
+            }
+            else
+            {
+                try
                 {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex, "UiContext execute error.");
-                    }
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("UiContext execute error: " + ex.Message);
                 }
             }
-            else
-            {
-                _uiContext.Send(obj => { action?.Invoke(); }, null);
-            }
         }
-
-        public static void ToUiThread(this Action action)
-        {
-            if (_uiContext == null)
-            {
-                Application.Current?.Dispatcher?.BeginInvoke(new Action(() =>
-                {
-                    try
-                    {
-                        action?.Invoke();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex, "UiContext execute error.");
-                    }
-                }), DispatcherPriority.Normal);
-            }
-            else
-            {
-                _uiContext.Post(obj => { action?.Invoke(); }, null);
-            }
-        }
-
-        public static bool CheckDispatcherAccess() => Thread.CurrentThread.ManagedThreadId == 1;
     }
 }

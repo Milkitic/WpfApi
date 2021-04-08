@@ -3,15 +3,15 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Xaml;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Utils
 {
-    [MarkupExtensionReturnType(typeof(FrameworkElement))]
-    public class RootObject : MarkupExtension
+    [MarkupExtensionReturnType(typeof(object))]
+    public class RootObjectDataContext : MarkupExtension
     {
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             var rootObjectProvider = (IRootObjectProvider)serviceProvider.GetService(typeof(IRootObjectProvider));
-            return rootObjectProvider?.RootObject;
+            return (rootObjectProvider?.RootObject as FrameworkElement)?.DataContext;
         }
     }
 }

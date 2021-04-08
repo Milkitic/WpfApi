@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Milki.Utils.WPF.Annotations;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Milky.OsuPlayer.Presentation.Annotations;
 
 namespace Milki.Utils.WPF.Interaction
 {

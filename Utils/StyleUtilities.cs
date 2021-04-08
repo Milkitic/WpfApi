@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Utils
 {
     public static class StyleUtilities
     {
