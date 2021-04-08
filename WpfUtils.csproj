@@ -9,6 +9,7 @@
     <Authors>Milkitic</Authors>
     <PackageProjectUrl>https://github.com/Milkitic/WpfUtils</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   
   <ItemGroup>
