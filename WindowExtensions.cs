@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace Milky.WpfApi
+namespace Milki.Utils.WPF
 {
     public static class WindowExtensions
     {

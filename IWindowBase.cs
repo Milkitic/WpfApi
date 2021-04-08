@@ -1,5 +1,4 @@
-﻿
-namespace Milky.WpfApi
+﻿namespace Milki.Utils.WPF
 {
     public interface IWindowBase
     {

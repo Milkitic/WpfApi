@@ -1,22 +1,66 @@
 ﻿using System;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 
-namespace Milky.WpfApi
+namespace Milki.Utils.WPF
 {
     public static class Execute
     {
-        public static void OnUiThread(this Action action)
+        public static async Task OnUiThreadAsync(Func<Task> asyncAction)
         {
-            Application.Current?.Dispatcher?.Invoke(() => { action?.Invoke(); });
-        }
-		
-        public static void ToUiThread(this Action action)
-        {
-            Application.Current?.Dispatcher?.BeginInvoke(new Action(() => { action?.Invoke(); }), DispatcherPriority.Normal);
+            if (Application.Current?.Dispatcher != null)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(asyncAction);
+            }
+            else
+            {
+                try
+                {
+                    if (asyncAction != null) await asyncAction.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("UiContext execute error: " + ex.Message);
+                }
+            }
         }
 
-        public static bool CheckDispatcherAccess() => Thread.CurrentThread.ManagedThreadId == 1;
+        public static async Task OnUiThreadAsync(Action action)
+        {
+            if (Application.Current?.Dispatcher != null)
+            {
+                await Application.Current.Dispatcher.InvokeAsync(action);
+            }
+            else
+            {
+                try
+                {
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("UiContext execute error: " + ex.Message);
+                }
+            }
+        }
+
+        public static void OnUiThread(this Action action)
+        {
+            if (Application.Current?.Dispatcher != null)
+            {
+                Application.Current.Dispatcher.Invoke(action);
+            }
+            else
+            {
+                try
+                {
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("UiContext execute error: " + ex.Message);
+                }
+            }
+        }
     }
 }
