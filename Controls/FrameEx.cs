@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Controls
 {
     public class FrameEx : Frame
     {

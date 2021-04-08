@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Markup;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Dependency
 {
     public class GenericType : MarkupExtension
     {

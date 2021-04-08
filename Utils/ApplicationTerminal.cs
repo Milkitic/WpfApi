@@ -4,7 +4,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Milki.Utils.WPF
+namespace Milki.Utils.WPF.Utils
 {
     public class ApplicationTerminal
     {
