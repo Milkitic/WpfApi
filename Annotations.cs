@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 using System;
+
 // ReSharper disable InheritdocConsiderUsage
 
 #pragma warning disable 1591
@@ -30,8 +31,9 @@ using System;
 // ReSharper disable IntroduceOptionalParameters.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable once CheckNamespace
 
-namespace Milky.WpfApi.Annotations
+namespace Milki.Utils.WPF.Annotations
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,
@@ -370,7 +372,7 @@ namespace Milky.WpfApi.Annotations
   /// Indicates that the marked symbol is used implicitly (e.g. via reflection, in external library),
   /// so this symbol will not be reported as unused (as well as by other usage inspections).
   /// </summary>
-  [AttributeUsage(AttributeTargets.All, Inherited = false)]
+  [AttributeUsage(AttributeTargets.All)]
   public sealed class UsedImplicitlyAttribute : Attribute
   {
     public UsedImplicitlyAttribute()
@@ -463,7 +465,6 @@ namespace Milky.WpfApi.Annotations
   /// which should not be removed and so is treated as used.
   /// </summary>
   [MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
-  [AttributeUsage(AttributeTargets.All, Inherited = false)]
   public sealed class PublicAPIAttribute : Attribute
   {
     public PublicAPIAttribute() { }

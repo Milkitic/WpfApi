@@ -4,25 +4,22 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media.Animation;
 
-// Code from http://www.wpfmentor.com/2009/01/how-to-debug-triggers-using-trigger.html
-// No license specified - this code is trimmed out from Release build anyway so it should be ok using it this way
-
-// HOWTO: add the following attached property to any trigger and you will see when it is activated/deactivated in the output window
-//        TriggerTracing.TriggerName="your debug name"
-//        TriggerTracing.TraceEnabled="True"
-
-// Example:
-// <Trigger my:TriggerTracing.TriggerName="BoldWhenMouseIsOver"  
-//          my:TriggerTracing.TraceEnabled="True"  
-//          Property="IsMouseOver"  
-//          Value="True">  
-//     <Setter Property = "FontWeight" Value="Bold"/>  
-// </Trigger> 
-//
-// As this works on anything that inherits from TriggerBase, it will also work on <MultiTrigger>.
-
-namespace Milky.WpfApi
+namespace Milki.Utils.WPF.Debugging
 {
+    // HOWTO: add the following attached property to any trigger and you will see when it is activated/deactivated in the output window
+    //        TriggerTracing.TriggerName="your debug name"
+    //        TriggerTracing.TraceEnabled="True"
+
+    // Example:
+    // <Trigger my:TriggerTracing.TriggerName="BoldWhenMouseIsOver"  
+    //          my:TriggerTracing.TraceEnabled="True"  
+    //          Property="IsMouseOver"  
+    //          Value="True">  
+    //     <Setter Property = "FontWeight" Value="Bold"/>  
+    // </Trigger> 
+    //
+    // As this works on anything that inherits from TriggerBase, it will also work on <MultiTrigger>.
+
     /// <summary>
     /// Contains attached properties to activate Trigger Tracing on the specified Triggers.
     /// This file alone should be dropped into your app.
@@ -34,7 +31,11 @@ namespace Milky.WpfApi
             // Initialise WPF Animation tracing and add a TriggerTraceListener
             PresentationTraceSources.Refresh();
             PresentationTraceSources.AnimationSource.Listeners.Clear();
+
+#if DEBUG
             PresentationTraceSources.AnimationSource.Listeners.Add(new TriggerTraceListener());
+#endif
+
             PresentationTraceSources.AnimationSource.Switch.Level = SourceLevels.All;
         }
 
@@ -171,7 +172,6 @@ namespace Milky.WpfApi
             {
                 base.TraceEvent(eventCache, source, eventType, id, format, args);
 
-#if DEBUG
                 if (format.StartsWith("Storyboard has begun;"))
                 {
                     TriggerTraceStoryboard storyboard = args[1] as TriggerTraceStoryboard;
@@ -196,7 +196,6 @@ namespace Milky.WpfApi
                             storyboard.StoryboardType));
                     }
                 }
-#endif
 
             }
 
@@ -210,3 +209,4 @@ namespace Milky.WpfApi
         }
     }
 }
+

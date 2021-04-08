@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Milky.WpfApi
+namespace Milki.Utils.WPF.Dependency
 {
     public static class ObjectExtension
     {
@@ -21,13 +21,21 @@ namespace Milky.WpfApi
             return null;
         }
 
-        public static FrameworkElement GetParentObject(this FrameworkElement obj, params Type[] types)
+        public static T GetParentObject<T>(this FrameworkElement obj) where T : FrameworkElement
+        {
+            return FindParentObjects(obj) as T;
+        }
+
+        public static FrameworkElement FindParentObjects(this FrameworkElement obj, params Type[] types)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(obj);
             while (parent != null)
             {
                 if (parent is FrameworkElement fe)
                 {
+                    if (types.Length == 0)
+                        return fe;
+
                     var type = fe.GetType();
                     if (types.Any(k => type.IsSubclassOf(k)))
                     {

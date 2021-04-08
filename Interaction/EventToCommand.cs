@@ -1,30 +1,9 @@
-﻿// ****************************************************************************
-// <copyright file="EventToCommand.cs" company="GalaSoft Laurent Bugnion">
-// Copyright © GalaSoft Laurent Bugnion 2009-2016
-// </copyright>
-// ****************************************************************************
-// <author>Laurent Bugnion</author>
-// <email>laurent@galasoft.ch</email>
-// <date>3.11.2009</date>
-// <project>GalaSoft.MvvmLight.Extras</project>
-// <web>http://www.mvvmlight.net</web>
-// <license>
-// See license.txt in this solution or http://www.galasoft.ch/license_MIT.txt
-// </license>
-// ****************************************************************************
-
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
-#if SILVERLIGHT
-using System.Windows.Controls;
-#endif
-
-////using GalaSoft.Utilities.Attributes;
-
-namespace GalaSoft.MvvmLight.Command
+namespace Milki.Utils.WPF.Interaction
 {
     /// <summary>
     /// This <see cref="T:System.Windows.Interactivity.TriggerAction`1" /> can be
@@ -116,7 +95,7 @@ namespace GalaSoft.MvvmLight.Command
         {
             get
             {
-                return (ICommand) GetValue(CommandProperty);
+                return (ICommand)GetValue(CommandProperty);
             }
 
             set
@@ -174,7 +153,7 @@ namespace GalaSoft.MvvmLight.Command
         {
             get
             {
-                return (bool) GetValue(MustToggleIsEnabledProperty);
+                return (bool)GetValue(MustToggleIsEnabledProperty);
             }
 
             set
@@ -347,7 +326,7 @@ namespace GalaSoft.MvvmLight.Command
         /// <param name="parameter">The EventArgs of the fired event.</param>
         protected override void Invoke(object parameter)
         {
-            if (AssociatedElementIsDisabled() 
+            if (AssociatedElementIsDisabled()
                 && !AlwaysInvokeCommand)
             {
                 return;
@@ -382,10 +361,10 @@ namespace GalaSoft.MvvmLight.Command
 
             if (e.OldValue != null)
             {
-                ((ICommand) e.OldValue).CanExecuteChanged -= element.OnCommandCanExecuteChanged;
+                ((ICommand)e.OldValue).CanExecuteChanged -= element.OnCommandCanExecuteChanged;
             }
 
-            var command = (ICommand) e.NewValue;
+            var command = (ICommand)e.NewValue;
 
             if (command != null)
             {

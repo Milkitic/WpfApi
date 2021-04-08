@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Milky.WpfApi.Commands
+namespace Milki.Utils.WPF.Interaction
 {
-    public class DelegateCommand : ICommand
+    public class RelayCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
 
-        public DelegateCommand(Action<object> execute) : this(execute, null) { }
+        public RelayCommand(Action<object> execute) : this(execute, null) { }
 
-        public DelegateCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
@@ -32,10 +32,5 @@ namespace Milky.WpfApi.Commands
             _execute?.Invoke(parameter);
         }
 
-
-        public void ChangeCanExecute()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
     }
 }
