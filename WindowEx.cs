@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Milki.Utils.WPF
@@ -11,6 +13,7 @@ namespace Milki.Utils.WPF
     /// </summary>
     public abstract class WindowEx : Window, IWindowBase
     {
+        private static readonly SemaphoreSlim _singleThreadDialogSemaphore = new SemaphoreSlim(1, 1);
         private static readonly List<WindowEx> Current = new List<WindowEx>();
         private bool _shown;
 
@@ -49,6 +52,28 @@ namespace Milki.Utils.WPF
             Current.Add(this);
         }
 
+        public async Task ShowDialogAsync(CancellationToken cancellationToken = default)
+        {
+            await _singleThreadDialogSemaphore.WaitAsync(cancellationToken);
+            var tcs = new TaskCompletionSource<object>();
+            Closed += (sender, args) =>
+            {
+                _singleThreadDialogSemaphore.Release();
+                tcs.TrySetResult(null);
+            };
+
+            if (cancellationToken != default)
+                cancellationToken.Register(() =>
+                {
+                    _singleThreadDialogSemaphore.Release();
+                    tcs.SetCanceled();
+                });
+
+            //window.Show();
+            await Execute.OnUiThreadAsync(Show);
+            if (IsClosed) await Task.CompletedTask;
+            else await tcs.Task;
+        }
         /// <summary>
         /// 当主窗体退出前，向所有活跃窗体发送退出请求
         /// </summary>
@@ -102,7 +127,14 @@ namespace Milki.Utils.WPF
 
             foreach (var windowBase in windows)
             {
-                windowBase.Close();
+                if (windowBase is ToolWindow tw)
+                {
+                    tw.ForceClose();
+                }
+                else
+                {
+                    windowBase.Close();
+                }
             }
         }
 
